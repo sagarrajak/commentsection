@@ -8,10 +8,10 @@ import { store } from "./store/store.ts";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <IndexDbProvider>
-      <Provider store={store}>
+    <Provider store={store}>
+      <IndexDbProvider>
         <App />
-      </Provider>
-    </IndexDbProvider>
+      </IndexDbProvider>
+    </Provider>
   </React.StrictMode>
 );

@@ -42,20 +42,52 @@ function dfsEdit(
   return false;
 }
 
-function dfsAdd(parentId: string, comment: CommentStruct) {
+function dfsAdd(
+  parentId: string,
+  comment: CommentStruct,
+  commentToAdd: CommentStruct
+) {
   if (!comment) return false;
   if (comment.id === parentId) {
     if (!comment.replys) comment.replys = [];
-    comment.replys.push(comment);
+    comment.replys.push(commentToAdd);
     return true;
   }
   if (comment.replys) {
     for (let i = 0; i < comment.replys.length; i++) {
       const singleComment = comment.replys[i];
-      dfsAdd(parentId, singleComment);
+      dfsAdd(parentId, singleComment, commentToAdd);
     }
   }
   return false;
+}
+
+function buildDfsTree(comments: SingleCommentInterface[]) {
+  const data: Record<string, CommentStruct[]> = {};
+  const outputNode: CommentStruct[] = [];
+  for (let i = 0; i < comments.length; i++) {
+    const comment = comments[i];
+    if (comment.parentId) {
+      if (!data[comment.parentId]) data[comment.parentId] = [];
+      data[comment.parentId].push(comment);
+    } else {
+      outputNode.push(comment);
+    }
+  }
+
+  const dfsHelper = (node: CommentStruct) => {
+    if (data[node.id]) {
+      node.replys = data[node.id];
+      for (let i = 0; i < node.replys.length; i++) {
+        dfsHelper(node.replys[i]);
+      }
+    }
+  };
+
+  for (let obj of outputNode)
+    dfsHelper(obj)
+
+  return outputNode;
 }
 
 // Define a type for the slice state
@@ -102,34 +134,29 @@ export const commentSlice = createSlice({
       if (!action.payload.parentId) state.comments.push(action.payload.comment);
       else {
         for (let i = 0; i < state.comments.length; i++) {
-          dfsAdd(action.payload.parentId, action.payload.comment);
+          dfsAdd(
+            action.payload.parentId,
+            state.comments[i],
+            action.payload.comment
+          );
         }
       }
     },
-    buildCommentTreeAction: (state, action: PayloadAction<{comments: SingleCommentInterface[]}>) => {
-        const data: Record<string, CommentStruct[]> = {};
-        for (let i=0 ; i<action.payload.comments.length; i++) {
-          const comment = action.payload.comments[i];
-          if (comment.parentId) {
-            if (!data[comment.parentId]) data[comment.parentId] = []
-            data[comment.parentId].push(comment);
-          }
-        }
-
-        let outputArray: CommentStruct[] = [];
-        for (let i = 0; i < action.payload.comments.length; i++) {
-          const comment: CommentStruct = action.payload.comments[i];
-          if (data[comment.id] && data[comment.id].length) {
-            comment.replys = data[comment.id];
-          } else {
-            outputArray.push(comment);
-          }
-        } 
-        state.comments = outputArray;
-    }
-  }
+    buildCommentTreeAction: (
+      state,
+      action: PayloadAction<{ comments: SingleCommentInterface[] }>
+    ) => {
+      state.comments = buildDfsTree(action.payload.comments);
+      console.log({ data: state.comments });
+    },
+  },
 });
 
-export const { deleteCommentAction, editCommentAction, addCommentAction } = commentSlice.actions;
+export const {
+  deleteCommentAction,
+  editCommentAction,
+  addCommentAction,
+  buildCommentTreeAction,
+} = commentSlice.actions;
 
 export default commentSlice.reducer;

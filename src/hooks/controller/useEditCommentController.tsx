@@ -9,11 +9,12 @@ export function useEditCommentController() {
   const db = useDbContext();
   const editComment = async (data: {
     comment: string;
+    userName: string;
     id: string
   }) => {
     const dispatch = useAppDispatch();
-    const {comment, id} = data;
-    await updateData(db, StorageEnum.comments, id, comment);
+    const {comment, id, userName} = data;
+    await updateData(StorageEnum.comments, id, comment, userName);
     dispatch(editCommentAction({id, comment, dateString: new Date().toISOString()}))
   };
 

@@ -1,12 +1,12 @@
 import "./App.css";
-import AddEditCommentContainer from "./components/AddEditCommentContainer";
-import CommentContainer from "./components/CommentContainer";
+import MainContainer from "./components/MainContainer";
 
 function App() {
-    return <>
-        <AddEditCommentContainer/>
-        <CommentContainer/>
+  return (
+    <>
+      <MainContainer />
     </>
+  );
 }
 
 export default App;

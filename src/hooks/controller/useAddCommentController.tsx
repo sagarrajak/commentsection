@@ -23,7 +23,7 @@ function useAddCommentController() {
         ...data
 
     };
-    await addData(db, StorageEnum.comments, payload);
+    await addData(StorageEnum.comments, payload);
     dispatch(
       addCommentAction({
         parentId: parentId,

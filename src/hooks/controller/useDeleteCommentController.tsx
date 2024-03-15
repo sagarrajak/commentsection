@@ -41,7 +41,7 @@ function useDeleteCommentController() {
       const node = findDeletedNode(id, state.comments[i]);
       if (node) {
         const nodesToDelete = findAllChildsOfDeletedNode(node);
-        await deleteData(db, StorageEnum.comments, nodesToDelete);
+        await deleteData(StorageEnum.comments, nodesToDelete);
         break;
       }
     }

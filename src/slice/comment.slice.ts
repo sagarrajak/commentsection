@@ -23,18 +23,20 @@ function dfsEdit(
   id: string,
   comment: CommentStruct,
   commentMessage: string,
-  dateString: string
+  dateString: string,
+  userName: string
 ) {
   if (!comment) return false;
   if (comment.id === id) {
     comment.comment = commentMessage;
     comment.editedDate = dateString;
+    comment.userName = userName;
     return true;
   }
   if (comment.replys) {
     for (let i = 0; i < comment.replys.length; i++) {
       const singleComment = comment.replys[i];
-      if (dfsEdit(id, singleComment, commentMessage, dateString)) {
+      if (dfsEdit(id, singleComment, commentMessage, dateString, userName)) {
         break;
       }
     }
@@ -108,19 +110,24 @@ export const commentSlice = createSlice({
     // Use the PayloadAction type to declare the contents of `action.payload`
     deleteCommentAction: (state, action: PayloadAction<{ id: string }>) => {
       for (let i = 0; i < state.comments.length; i++) {
-        dfsDelete(action.payload.id, state.comments[i]);
+        if (state.comments[i].id === action.payload.id) {
+          state.comments.splice(i, 1);
+        } else {
+          dfsDelete(action.payload.id, state.comments[i]);
+        }
       }
     },
     editCommentAction: (
       state,
-      action: PayloadAction<{ id: string; comment: string; dateString: string }>
+      action: PayloadAction<{ id: string; comment: string; dateString: string, userName: string}>
     ) => {
       for (let i = 0; i < state.comments.length; i++) {
         dfsEdit(
           action.payload.id,
           state.comments[i],
           action.payload.comment,
-          action.payload.dateString
+          action.payload.dateString,
+          action.payload.userName
         );
       }
     },

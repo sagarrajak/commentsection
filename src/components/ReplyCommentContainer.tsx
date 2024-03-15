@@ -5,6 +5,7 @@ import AddCommentContainer from "./AddCommentContainer";
 import CommentContainer from "./CommentContainer";
 import useAddCommentController from "../hooks/controller/useAddCommentController";
 import { useEditCommentController } from "../hooks/controller/useEditCommentController";
+import useDeleteCommentController from "../hooks/controller/useDeleteCommentController";
 
 export const ReplyCommentSection = (props: { comment: CommentStruct }) => {
   const { comment } = props;
@@ -13,22 +14,27 @@ export const ReplyCommentSection = (props: { comment: CommentStruct }) => {
 
   const { addComment } = useAddCommentController();
   const { editComment } = useEditCommentController();
+  const { deleteComment } = useDeleteCommentController();
 
   return (
     <>
       <div>
-        <CommentContainer
-          onEdit={() => {
-            if (!isReplyMode) setisEditMode(true);
-          }}
-          onReply={() => {
-            if (!isEditMode) setisReplyMode(true);
-          }}
-          onDelete={() => {}}
-          comment={comment.comment}
-          userName={comment.userName}
-          createdDate={comment.createdDate}
-        />
+        {!isEditMode && (
+          <CommentContainer
+            onEdit={() => {
+              if (!isReplyMode) setisEditMode(true);
+            }}
+            onReply={() => {
+              if (!isEditMode) setisReplyMode(true);
+            }}
+            onDelete={() => {
+              deleteComment({ id: comment.id });
+            }}
+            comment={comment.comment}
+            userName={comment.userName}
+            createdDate={comment.createdDate}
+          />
+        )}
       </div>
       <>
         {isReplyMode && (
@@ -40,8 +46,10 @@ export const ReplyCommentSection = (props: { comment: CommentStruct }) => {
             }) => {
               addComment({
                 comment: data.comment,
-                userName: data.createdDate,
+                userName: data.userName,
                 parentId: comment.id,
+              }).then((res) => {
+                setisReplyMode(false);
               });
             }}
           />
@@ -55,11 +63,13 @@ export const ReplyCommentSection = (props: { comment: CommentStruct }) => {
               createdDate: string;
               userName: string;
             }) => {
-                editComment({
-                    comment: data.comment,
-                    id: comment.id,
-                    userName: data.userName
-                })
+              editComment({
+                comment: data.comment,
+                id: comment.id,
+                userName: data.userName,
+              }).then(() => {
+                setisEditMode(false);
+              });
             }}
             data={{
               comment: comment.comment,

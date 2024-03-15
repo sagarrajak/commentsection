@@ -5,7 +5,7 @@ export const addData = <T>(
   data: T
 ): Promise<T | string | null> => {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open("myDB");
+    const request = indexedDB.open("myDB", 2);
     request.onsuccess = (evt: any) => {
       // console.log(evt)
       const db = evt.target.result;

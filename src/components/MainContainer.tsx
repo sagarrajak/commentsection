@@ -17,7 +17,7 @@ function MainContainer() {
         }) => {
           addComment({
             comment: data.comment,
-            userName: data.createdDate,
+            userName: data.userName,
             parentId: null,
           });
         }}

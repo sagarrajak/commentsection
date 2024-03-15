@@ -6,13 +6,13 @@ export const initDb = (): Promise<any> => {
   return new Promise((resolve, reject) => {
     console.log("sdfsdfs1");
     // open the connection
-    const request = indexedDB.open("myDB", 1);
+    const request = indexedDB.open("myDB", 2);
     let db, version;
 
-    request.onupgradeneeded = () => {
-      console.log("sdfsdfs1");
-      db = request.result;
+    request.onupgradeneeded = (event: any) => {
+      db = event.target.result;
 
+      console.log(db.objectStoreNames.contains(StorageEnum.comments));
       // if the data object store doesn't exist, create it
       if (!db.objectStoreNames.contains(StorageEnum.comments)) {
         console.log("Creating users store");
@@ -22,7 +22,6 @@ export const initDb = (): Promise<any> => {
     };
 
     request.onsuccess = (evt: any) => {
-      console.log("sdfsdfs2");
       // console.log(evt)
       db = evt.target.result;
       version = db.version;

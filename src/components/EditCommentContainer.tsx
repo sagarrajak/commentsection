@@ -37,7 +37,7 @@ function EditCommentContainer(props: EditCommentContainerProps) {
   return (
     <Card className="w-[50%] p-4 relative flex flex-col">
       <label className="block w-full text-left font-medium text-lg">
-        Comment
+        Edit comment
       </label>
       <Input
         placeholder="Name"

@@ -41,12 +41,12 @@ function useDeleteCommentController() {
       const node = findDeletedNode(id, state.comments[i]);
       if (node) {
         const nodesToDelete = findAllChildsOfDeletedNode(node);
-        await deleteData(StorageEnum.comments, nodesToDelete);
+        console.log("nodes below this", nodesToDelete);
+        deleteData(StorageEnum.comments, nodesToDelete);
         break;
       }
     }
     
-    // TODO dispatch event to delete add child nodes
     dispatch(deleteCommentAction({id: data.id}))
   };
 

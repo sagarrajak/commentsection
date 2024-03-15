@@ -13,7 +13,7 @@ export interface EditCommentContainerProps {
   }) => void;
 }
 
-function EditCommentContainer(props: EditCommentContainerProps) {
+function AddCommentContainer(props: EditCommentContainerProps) {
   const { watch, register, handleSubmit } = useForm<{
     userName: string;
     comment: string;
@@ -29,7 +29,7 @@ function EditCommentContainer(props: EditCommentContainerProps) {
     <form onSubmit={handleSubmitHelper}>
       <Card className="w-[50%] p-4 relative flex flex-col">
         <label className="block w-full text-left font-medium text-lg">
-          Comment
+          Add comment
         </label>
         <Input
           placeholder="Name"
@@ -52,4 +52,4 @@ function EditCommentContainer(props: EditCommentContainerProps) {
   );
 }
 
-export default EditCommentContainer;
+export default AddCommentContainer;

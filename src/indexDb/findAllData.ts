@@ -16,11 +16,9 @@ export const findAllData = <T>(
       cursorRequest.onsuccess = (event: any) => {
         const cursor = event.target.result;
         if (cursor) {
-          // Collect data into the array
           dataArray.push(cursor.value);
           cursor.continue();
         } else {
-          // No more data, resolve with the array
           resolve(dataArray);
         }
       };

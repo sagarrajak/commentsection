@@ -8,7 +8,7 @@ export const updateData = (
   userName: string
 ): Promise<SingleCommentInterface | string | null> => {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open("myDB");
+    const request = indexedDB.open("myDB", 2);
     request.onsuccess = (evt: any) => {
       const db = evt.target.result;
       const tx = db.transaction(storeName, "readwrite");

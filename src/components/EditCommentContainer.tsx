@@ -42,6 +42,7 @@ function EditCommentContainer(props: EditCommentContainerProps) {
       <Input
         placeholder="Name"
         className="mt-2 mb-2"
+        disabled
         {...register("userName")}
       />
       <TextField

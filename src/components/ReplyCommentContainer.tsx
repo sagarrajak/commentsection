@@ -48,7 +48,7 @@ export const ReplyCommentSection = (props: { comment: CommentStruct }) => {
                 comment: data.comment,
                 userName: data.userName,
                 parentId: comment.id,
-              }).then((res) => {
+              }).then(() => {
                 setisReplyMode(false);
               });
             }}

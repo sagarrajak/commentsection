@@ -1,14 +1,11 @@
-import React from "react";
-import { addData } from "../../indexDb/addData";
-import { useDbContext } from "../../provider/IndexDbProvider";
-import { StorageEnum } from "../../indexDb/initDb";
 import { v4 as uuid } from 'uuid';
-import { SingleCommentInterface } from "../../types";
-import { useAppDispatch } from "../../store/store";
+import { addData } from "../../indexDb/addData";
+import { StorageEnum } from "../../indexDb/initDb";
 import { addCommentAction } from "../../slice/comment.slice";
+import { useAppDispatch } from "../../store/store";
+import { SingleCommentInterface } from "../../types";
 
 function useAddCommentController() {
-  const db = useDbContext()
   const dispatch = useAppDispatch();
   const addComment = async (data: {
     comment: string;

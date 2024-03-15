@@ -3,7 +3,6 @@ import { Button } from "./button/Button";
 import Card from "./card/Card";
 import Input from "./input/Input";
 import TextField from "./textfield/TextField";
-import { useEffect } from "react";
 
 export interface EditCommentContainerProps {
   onSubmit: (data: {
@@ -14,7 +13,7 @@ export interface EditCommentContainerProps {
 }
 
 function AddCommentContainer(props: EditCommentContainerProps) {
-  const { watch, register, handleSubmit } = useForm<{
+  const {  register, handleSubmit } = useForm<{
     userName: string;
     comment: string;
   }>();

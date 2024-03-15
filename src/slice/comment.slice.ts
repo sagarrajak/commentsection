@@ -1,5 +1,4 @@
-import { PayloadAction, PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../store/store";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { CommentStruct, SingleCommentInterface } from "../types";
 
 function dfsDelete(id: string, comment: CommentStruct) {
@@ -86,7 +85,7 @@ function buildDfsTree(comments: SingleCommentInterface[]) {
     }
   };
 
-  for (let obj of outputNode)
+  for (const obj of outputNode)
     dfsHelper(obj)
 
   return outputNode;
@@ -104,10 +103,8 @@ const initialState: CommentState = {
 
 export const commentSlice = createSlice({
   name: "commentAction",
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    // Use the PayloadAction type to declare the contents of `action.payload`
     deleteCommentAction: (state, action: PayloadAction<{ id: string }>) => {
       for (let i = 0; i < state.comments.length; i++) {
         if (state.comments[i].id === action.payload.id) {

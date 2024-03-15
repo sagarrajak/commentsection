@@ -1,6 +1,5 @@
 import { deleteData } from "../../indexDb/deleteData";
 import { StorageEnum } from "../../indexDb/initDb";
-import { useDbContext } from "../../provider/IndexDbProvider";
 import { deleteCommentAction } from "../../slice/comment.slice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { CommentStruct } from "../../types";
@@ -31,7 +30,6 @@ function findDeletedNode(
 }
 
 function useDeleteCommentController() {
-  const db = useDbContext();
   const state = useAppSelector((state) => state.comments);
   const dispatch = useAppDispatch();
 

@@ -8,7 +8,7 @@ export const deleteData = (storeName: StorageEnum, id: string | string[]) => {
     const store = tx.objectStore(storeName);
 
     if (Array.isArray(id)) {
-      for (let deletedId of id) {
+      for (const deletedId of id) {
         store.delete(deletedId);
       }
     } else {

@@ -13,7 +13,7 @@ export const findAllData = <T>(
       const dataArray: T[] = [];
       const cursorRequest = store.openCursor();
 
-      cursorRequest.onsuccess = (event: any) => {
+      cursorRequest.onsuccess = (event: { target: { result: any; }; }) => {
         const cursor = event.target.result;
         if (cursor) {
           dataArray.push(cursor.value);

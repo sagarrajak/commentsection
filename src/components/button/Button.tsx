@@ -10,8 +10,6 @@ export const Button = (props: ButtonProps) => {
   );
 
   return (
-    <button {...otherProps} className={className}>
-      {label}
-    </button>
+    <button {...otherProps} className={className} />
   );
 };

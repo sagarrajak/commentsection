@@ -1,6 +1,6 @@
 import Card from "./card/Card";
 
-export interface CommentContainerProps {}
+export interface CommentContainerProps { }
 
 export interface CommentContainerProps {
   onEdit: () => void;
@@ -11,8 +11,20 @@ export interface CommentContainerProps {
   createdDate: string;
 }
 
+function convertIsoDate(isoDate: string) {
+  const year = isoDate.slice(0, 4);
+  const month = new Date(isoDate)
+    .toLocaleString("en-US", { month: "long" })
+    .slice(0, 3);
+  const day = isoDate.slice(8, 10);
+
+  return `${day} ${month} ${year}`;
+}
+
+
 function CommentContainer(props: CommentContainerProps) {
   const { onDelete, onEdit, onReply, comment, createdDate, userName } = props;
+
 
   return (
     <Card className="w-[50%] p-4 relative flex flex-col">
@@ -20,7 +32,7 @@ function CommentContainer(props: CommentContainerProps) {
         {userName}
       </div>
       <div className="text-sm font-medium absolute right-1 top-1">
-        {createdDate}
+        {convertIsoDate(createdDate)}
       </div>
       <div className="mt-2 mb-2  font-normal text-sm text-gray-500 w-[80%]">
         {comment}

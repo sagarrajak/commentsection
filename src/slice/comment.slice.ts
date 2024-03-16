@@ -46,18 +46,22 @@ function dfsEdit(
 function dfsAdd(
   parentId: string,
   comment: CommentStruct,
-  commentToAdd: CommentStruct
+  commentToAdd: CommentStruct,
+  order: -1 | 1
 ) {
   if (!comment) return false;
   if (comment.id === parentId) {
     if (!comment.replys) comment.replys = [];
-    comment.replys.push(commentToAdd);
+    if (order > 0)
+      comment.replys.push(commentToAdd);
+    else 
+      comment.replys = [commentToAdd, ...comment.replys];
     return true;
   }
   if (comment.replys) {
     for (let i = 0; i < comment.replys.length; i++) {
       const singleComment = comment.replys[i];
-      dfsAdd(parentId, singleComment, commentToAdd);
+      dfsAdd(parentId, singleComment, commentToAdd, order);
     }
   }
   return false;
@@ -90,14 +94,14 @@ function buildDfsTree(comments: SingleCommentInterface[]) {
   return outputNode;
 }
 
-// Define a type for the slice state
 interface CommentState {
   comments: CommentStruct[];
+  order: 1 | -1
 }
 
-// Define the initial state using that type
 const initialState: CommentState = {
   comments: [],
+  order: 1
 };
 
 export const commentSlice = createSlice({
@@ -145,7 +149,8 @@ export const commentSlice = createSlice({
           dfsAdd(
             action.payload.parentId,
             state.comments[i],
-            action.payload.comment
+            action.payload.comment,
+            state.order
           );
         }
       }
@@ -177,8 +182,8 @@ export const commentSlice = createSlice({
           );
         }
       );
-      console.log(action.payload.comments);
       state.comments = buildDfsTree(action.payload.comments);
+      state.order = action.payload.sortDirection;
     },
   },
 });

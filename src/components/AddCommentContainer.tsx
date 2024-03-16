@@ -13,7 +13,7 @@ export interface EditCommentContainerProps {
 }
 
 function AddCommentContainer(props: EditCommentContainerProps) {
-  const {  register, handleSubmit } = useForm<{
+  const { register, handleSubmit, formState: { errors } } = useForm<{
     userName: string;
     comment: string;
   }>();
@@ -32,15 +32,21 @@ function AddCommentContainer(props: EditCommentContainerProps) {
         </label>
         <Input
           placeholder="Name"
-          className="mt-2 mb-2"
-          {...register("userName")}
+          className={`mt-2 mb-2`}
+          {...register("userName", { required: true })}
         />
+        {errors.comment?.type === 'required' && (
+          <p className="font-normal text-sm text-red-500 mt-[-10px] mb-2">Field is required!</p>
+        )}
         <TextField
           rowSpan={5}
           className="mt-2 mb-2"
           placeholder="Comment"
-          {...register("comment")}
+          {...register("comment", { required: true })}
         />
+        {errors.comment?.type === 'required' && (
+          <p className="font-normal text-sm text-red-500 mt-[-10px] mb-2">Field is required!</p>
+        )}
         <div className="flex flex-row justify-end">
           <Button className="flex-none w-auto" type="submit">
             Submit

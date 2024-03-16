@@ -85,8 +85,7 @@ function buildDfsTree(comments: SingleCommentInterface[]) {
     }
   };
 
-  for (const obj of outputNode)
-    dfsHelper(obj)
+  for (const obj of outputNode) dfsHelper(obj);
 
   return outputNode;
 }
@@ -116,7 +115,12 @@ export const commentSlice = createSlice({
     },
     editCommentAction: (
       state,
-      action: PayloadAction<{ id: string; comment: string; dateString: string, userName: string}>
+      action: PayloadAction<{
+        id: string;
+        comment: string;
+        dateString: string;
+        userName: string;
+      }>
     ) => {
       for (let i = 0; i < state.comments.length; i++) {
         dfsEdit(
@@ -150,8 +154,31 @@ export const commentSlice = createSlice({
       state,
       action: PayloadAction<{ comments: SingleCommentInterface[] }>
     ) => {
+      action.payload.comments.sort(
+        (lhr: SingleCommentInterface, rhs: SingleCommentInterface) => {
+          return (
+            (new Date(lhr.createdDate).getTime() - new Date(rhs.createdDate).getTime())
+          );
+        }
+      );
       state.comments = buildDfsTree(action.payload.comments);
-      console.log({ data: state.comments });
+    },
+    sortCommentTree: (
+      state,
+      action: PayloadAction<{
+        comments: SingleCommentInterface[];
+        sortDirection: -1 | 1;
+      }>
+    ) => {
+      action.payload.comments.sort(
+        (lhr: SingleCommentInterface, rhs: SingleCommentInterface) => {
+          return (
+             action.payload.sortDirection * (new Date(lhr.createdDate).getTime() - new Date(rhs.createdDate).getTime())
+          );
+        }
+      );
+      console.log(action.payload.comments);
+      state.comments = buildDfsTree(action.payload.comments);
     },
   },
 });
@@ -161,6 +188,7 @@ export const {
   editCommentAction,
   addCommentAction,
   buildCommentTreeAction,
+  sortCommentTree
 } = commentSlice.actions;
 
 export default commentSlice.reducer;

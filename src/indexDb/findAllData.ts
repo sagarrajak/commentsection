@@ -2,7 +2,7 @@ import { StorageEnum } from "./initDb";
 
 export const findAllData = <T>(
   storeName: StorageEnum
-): Promise<T[] | string | null> => {
+): Promise<T[]> => {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open("myDB");
     request.onsuccess = (evt: any) => {

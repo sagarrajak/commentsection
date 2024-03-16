@@ -12,7 +12,7 @@ export const IndexDbProvider = ({
   const [isIndexDBReady, setIsIndexDbReady] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
-  useEffect(function () {
+  useEffect(() => {
     setIsIndexDbReady(false);
     initDb()
       .then(() => {
@@ -28,7 +28,7 @@ export const IndexDbProvider = ({
       .catch(() => {
         setIsIndexDbReady(true);
       });
-  }, []);
+  }, [dispatch]);
 
   return <>{isIndexDBReady ? children : <h1>Please wait....</h1>}</>;
 };
